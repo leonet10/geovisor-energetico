@@ -1,0 +1,14 @@
+# Render Blueprint: despliega el dashboard como servicio web gratuito.
+# Cada push a la rama main vuelve a desplegar (incluye cambios en data/geovisor_datos.xlsx).
+services:
+  - type: web
+    name: geovisor-energetico
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:server --bind 0.0.0.0:$PORT --workers 2 --timeout 120 --preload
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.3
